@@ -1,5 +1,12 @@
 from django.views import View
 from django.http.response import JsonResponse
+from .models import Book
+
+
+class ListBooks(View):
+    def get(self, request):
+        books = Book.objects.all().values()
+        return JsonResponse(list(books), safe=False)
 
 
 class Ping(View):

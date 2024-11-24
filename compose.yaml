@@ -43,6 +43,17 @@ services:
       timeout: 5s
       retries: 5
 
+  prometheus:
+    build:
+      context: ./prometheus
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    networks:
+      - web
+    depends_on:
+      - backend
+
 networks:
   web:
 
