@@ -38,7 +38,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -54,8 +54,24 @@ services:
     depends_on:
       - backend
 
+  grafana:
+    build:
+      context: ./grafana
+      dockerfile: Dockerfile
+    ports:
+      - "9000:3000"
+    command: ./run.sh
+    networks:
+      - web
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_SECURITY_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_SECURITY_PASSWORD}
+    depends_on:
+      - prometheus
+
 networks:
   web:
+
 
 volumes:
   postgres_data:
