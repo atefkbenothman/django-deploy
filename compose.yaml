@@ -43,6 +43,17 @@ services:
       timeout: 5s
       retries: 5
 
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - web
+    command: redis-server
+
   prometheus:
     build:
       context: ./prometheus
@@ -75,3 +86,4 @@ networks:
 
 volumes:
   postgres_data:
+  redis_data:
