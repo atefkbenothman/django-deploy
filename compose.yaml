@@ -43,6 +43,23 @@ services:
       timeout: 5s
       retries: 5
 
+  celery:
+    build:
+      context: ./celery
+      dockerfile: Dockerfile
+    develop:
+      watch:
+        - action: sync
+          path: ./celery
+          target: /app
+    command: celery -A celery worker --loglevel=INFO
+    networks:
+      - web
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379
+    depends_on:
+      - redis
+
   redis:
     image: redis
     restart: always
