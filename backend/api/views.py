@@ -9,8 +9,16 @@ class UploadFile(View):
     def post(self, request):
         if len(request.FILES) == 0:
             return JsonResponse({"message": "no files attached"})
-        task = celery_app.send_task("add_numbers", args=[1, 2])
+
         uploaded_file = request.FILES["file"]
+
+        # 1. upload to aws s3
+
+        # 2. send task to celery with aws s3 file path
+        task = celery_app.send_task(
+            "convert_audio_file_to_hls", args=[uploaded_file.name]
+        )
+
         return JsonResponse(
             {
                 "message": "File uploaded succesfully",

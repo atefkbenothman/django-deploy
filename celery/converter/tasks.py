@@ -1,9 +1,9 @@
 from .celery import app
 
 
-@app.task(name="add_numbers")
-def add(x, y):
+@app.task(name="convert_audio_file_to_hls")
+def convert_audio_file_to_hls(filename: str):
     print("-------")
-    print(f"adding numbers: {x} and {y}")
+    print(f"converting file {filename}")
     print("-------")
-    return x + y
+    return
